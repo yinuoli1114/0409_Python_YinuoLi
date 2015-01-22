@@ -1,0 +1,4 @@
+"l0Entry"
+
+(42: "Answer to Life, the Universe, and Everything")
+(39: "bbl333rrrrrrrrrllllaaa")

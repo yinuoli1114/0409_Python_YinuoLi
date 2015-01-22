@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<sensors>
+    <sensor id="MIS" average="-4.80">
+        <value>+7.1513</value>
+        <value>10.5</value>
+        <value>+1.7755</value>
+        <value>1.5</value>
+        <value>-12.543</value>
+        <value>-11.7280</value>
+        <value>-14.6</value>
+        <value>-12.4</value>
+        <value>-1.55</value>
+        <value>-16.14931</value>
+    </sensor>
+    <sensor id="7ZW" average="1.37">
+        <value>+10.7982</value>
+        <value>-0.3484</value>
+        <value>-5.040</value>
+        <value>-12.24019</value>
+        <value>+1.185</value>
+        <value>9.5947350</value>
+        <value>-3.4</value>
+        <value>-1.7</value>
+        <value>+6.2</value>
+        <value>8.6391937</value>
+    </sensor>
+    <sensor id="PVR" average="8.58">
+        <value>+11.1</value>
+        <value>8.205</value>
+        <value>-8.176118</value>
+        <value>-1.26</value>
+        <value>+2.64</value>
+        <value>31.585</value>
+        <value>+12.266</value>
+        <value>23.21</value>
+        <value>+4.1</value>
+        <value>2.118316</value>
+    </sensor>
+    <sensor id="IDH" average="1.61">
+        <value>-7.0226</value>
+        <value>5.01328</value>
+        <value>+5.4031</value>
+        <value>9.9075</value>
+        <value>+9.893781</value>
+        <value>-6.89</value>
+        <value>-8.6</value>
+        <value>0.48390</value>
+        <value>-6.6485340</value>
+        <value>14.527</value>
+    </sensor>
+    <sensor id="ETL" average="-4.09">
+        <value>-6.712</value>
+        <value>5.7668117</value>
+        <value>-20.8577009</value>
+        <value>2.3596388</value>
+        <value>-7.78421</value>
+        <value>11.00</value>
+        <value>-8.555643</value>
+        <value>0.07558</value>
+        <value>-9.376</value>
+        <value>-6.816</value>
+    </sensor>
+    <sensor id="4IP" average="4.43">
+        <value>+1.86550</value>
+        <value>9.5</value>
+        <value>-7.905187</value>
+        <value>-4.8948</value>
+        <value>+29.74474</value>
+        <value>-6.225854</value>
+        <value>+19.2030</value>
+        <value>9.61149</value>
+        <value>-5.58</value>
+        <value>-1.06555</value>
+    </sensor>
+    <sensor id="C50" average="7.11">
+        <value>+11.27442</value>
+        <value>1.4157117</value>
+        <value>+19.3</value>
+        <value>6.70638</value>
+        <value>-1.1011124</value>
+        <value>3.70962</value>
+        <value>+10.97</value>
+        <value>-3.9816</value>
+        <value>-0.85463</value>
+        <value>23.7</value>
+    </sensor>
+</sensors>

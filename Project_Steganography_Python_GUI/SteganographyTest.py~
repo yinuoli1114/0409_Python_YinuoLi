@@ -1,0 +1,416 @@
+#! /usr/bin/python2.6
+__author__ = 'Classifier'
+
+import os
+import uuid
+import unittest
+from PIL import Image
+from Steganography import Message, Steganography
+
+def loadTwoTextFiles(path1, path2):
+    """
+    Load two text files and return them to allow for assertion of their content. A more elegant way to do that is to
+    create a custom assertion function: assertTextEqual
+    """
+
+    with open(path1, 'r') as firstFile:
+        first = firstFile.read()
+
+    with open(path2, 'r') as secondFile:
+        second = secondFile.read()
+
+    return first, second
+
+def loadTwoImageFiles(path1, path2):
+    """
+    Load two image files and return them to allow for assertion of their content. A more elegant way to do that is to
+    create a custom assertion function: assertImageEqual
+    """
+
+    first = Image.open(path1)
+    second = Image.open(path2)
+
+    return first, second
+
+class MyTestCase(unittest.TestCase):
+
+    testFileNames = []
+
+    def setUp(self):
+        """
+        Create a new file name to use if a test needs so.
+        """
+        self.targetTextFilePath = 'files/' + str(uuid.uuid4()) + '.txt'
+        self.targetImageFilePath = 'files/' + str(uuid.uuid4()) + '.png'
+
+        self.testFileNames.append(self.targetTextFilePath)
+        self.testFileNames.append(self.targetImageFilePath)
+
+    def test_embedShortTextHorizontal(self):
+
+        sourcePath = 'files/small.txt'
+        expectedPath = 'files/mona_small_h.png'
+
+        message = Message(filePath=sourcePath, messageType='Text')
+        medium = Steganography('files/mona.png')
+        medium.embedMessageInMedium(message, self.targetImageFilePath)
+
+        actualImage, expectedImage = loadTwoImageFiles(self.targetImageFilePath, expectedPath)
+
+        self.assertEqual(actualImage, expectedImage)
+
+    def test_embedShortTextVertical(self):
+
+        sourcePath = 'files/small.txt'
+        expectedPath = 'files/mona_small_v.png'
+
+        message = Message(filePath=sourcePath, messageType='Text')
+        medium = Steganography('files/mona.png', direction='vertical')
+        medium.embedMessageInMedium(message, self.targetImageFilePath)
+
+        actualImage, expectedImage = loadTwoImageFiles(self.targetImageFilePath, expectedPath)
+
+        self.assertEqual(actualImage, expectedImage)
+
+    def test_embedLongTextHorizontal(self):
+
+        sourcePath = 'files/full.txt'
+        expectedPath = 'files/lena_full_h.png'
+
+        message = Message(filePath=sourcePath, messageType='Text')
+        medium = Steganography('files/lena.png')
+        medium.embedMessageInMedium(message, self.targetImageFilePath)
+
+        actualImage, expectedImage = loadTwoImageFiles(self.targetImageFilePath, expectedPath)
+
+        self.assertEqual(actualImage, expectedImage)
+
+    def test_embedLongTextVertical(self):
+
+        sourcePath = 'files/full.txt'
+        expectedPath = 'files/lena_full_v.png'
+
+        message = Message(filePath=sourcePath, messageType='Text')
+        medium = Steganography('files/lena.png', direction='vertical')
+        medium.embedMessageInMedium(message, self.targetImageFilePath)
+
+        actualImage, expectedImage = loadTwoImageFiles(self.targetImageFilePath, expectedPath)
+
+        self.assertEqual(actualImage, expectedImage)
+
+    def test_embedGrayImageHorizontal(self):
+
+        sourcePath = 'files/dog.png'
+        expectedPath = 'files/bridge_dog_h.png'
+
+        message = Message(filePath=sourcePath, messageType='GrayImage')
+        medium = Steganography('files/bridge.png')
+        medium.embedMessageInMedium(message, self.targetImageFilePath)
+
+        actualImage, expectedImage = loadTwoImageFiles(self.targetImageFilePath, expectedPath)
+
+        self.assertEqual(actualImage, expectedImage)
+
+    def test_embedGrayImageVertical(self):
+
+        sourcePath = 'files/dog.png'
+        expectedPath = 'files/bridge_dog_v.png'
+
+        message = Message(filePath=sourcePath, messageType='GrayImage')
+        medium = Steganography('files/bridge.png', direction='vertical')
+        medium.embedMessageInMedium(message, self.targetImageFilePath)
+
+        actualImage, expectedImage = loadTwoImageFiles(self.targetImageFilePath, expectedPath)
+
+        self.assertEqual(actualImage, expectedImage)
+
+    def test_embedColorImageHorizontal(self):
+
+        sourcePath = 'files/sunflower.png'
+        expectedPath = 'files/nature_sunflower_h.png'
+
+        message = Message(filePath=sourcePath, messageType='ColorImage')
+        medium = Steganography('files/nature.png')
+        medium.embedMessageInMedium(message, self.targetImageFilePath)
+
+        actualImage, expectedImage = loadTwoImageFiles(self.targetImageFilePath, expectedPath)
+
+        self.assertEqual(actualImage, expectedImage)
+
+    def test_embedColorImageVertical(self):
+
+        sourcePath = 'files/sunflower.png'
+        expectedPath = 'files/nature_sunflower_v.png'
+
+        message = Message(filePath=sourcePath, messageType='ColorImage')
+        medium = Steganography('files/nature.png', direction='vertical')
+        medium.embedMessageInMedium(message, self.targetImageFilePath)
+
+        actualImage, expectedImage = loadTwoImageFiles(self.targetImageFilePath, expectedPath)
+
+        self.assertEqual(actualImage, expectedImage)
+
+    def test_extractShortTextHorizontal(self):
+
+        sourcePath = 'files/mona_small_h.png'
+        expectedPath = 'files/small.txt'
+
+        medium = Steganography(sourcePath)
+        message = medium.extractMessageFromMedium()
+        message.saveToTarget(self.targetTextFilePath)
+
+        actualTextFile, expectedTextFile = loadTwoTextFiles(self.targetTextFilePath, expectedPath)
+
+        self.assertEqual(actualTextFile, expectedTextFile)
+
+    def test_extractShortTextVertical(self):
+
+        sourcePath = 'files/mona_small_v.png'
+        expectedPath = 'files/small.txt'
+
+        medium = Steganography(sourcePath, direction='vertical')
+        message = medium.extractMessageFromMedium()
+        message.saveToTarget(self.targetTextFilePath)
+
+        actualTextFile, expectedTextFile = loadTwoTextFiles(self.targetTextFilePath, expectedPath)
+
+        self.assertEqual(actualTextFile, expectedTextFile)
+
+    def test_extractLongTextHorizontal(self):
+
+        sourcePath = 'files/lena_full_h.png'
+        expectedPath = 'files/full.txt'
+
+        medium = Steganography(sourcePath)
+        message = medium.extractMessageFromMedium()
+        message.saveToTarget(self.targetTextFilePath)
+
+        actualTextFile, expectedTextFile = loadTwoTextFiles(self.targetTextFilePath, expectedPath)
+
+        self.assertEqual(actualTextFile, expectedTextFile)
+
+    def test_extractLongTextVertical(self):
+
+        sourcePath = 'files/lena_full_v.png'
+        expectedPath = 'files/full.txt'
+
+        medium = Steganography(sourcePath, direction='vertical')
+        message = medium.extractMessageFromMedium()
+        message.saveToTarget(self.targetTextFilePath)
+
+        actualTextFile, expectedTextFile = loadTwoTextFiles(self.targetTextFilePath, expectedPath)
+
+        self.assertEqual(actualTextFile, expectedTextFile)
+
+    def test_extractGrayImageHorizontal(self):
+
+        sourcePath = 'files/bridge_dog_h.png'
+        expectedPath = 'files/dog.png'
+
+        medium = Steganography(sourcePath)
+        message = medium.extractMessageFromMedium()
+        message.saveToTarget(self.targetImageFilePath)
+
+        actualImage, expectedImage = loadTwoImageFiles(self.targetImageFilePath, expectedPath)
+
+        self.assertEqual(actualImage, expectedImage)
+
+    def test_extractGrayImageVertical(self):
+
+        sourcePath = 'files/bridge_dog_v.png'
+        expectedPath = 'files/dog.png'
+
+        medium = Steganography(sourcePath, direction='vertical')
+        message = medium.extractMessageFromMedium()
+        message.saveToTarget(self.targetImageFilePath)
+
+        actualImage, expectedImage = loadTwoImageFiles(self.targetImageFilePath, expectedPath)
+
+        self.assertEqual(actualImage, expectedImage)
+
+    def test_extractColorImageHorizontal(self):
+
+        sourcePath = 'files/nature_sunflower_h.png'
+        expectedPath = 'files/sunflower.png'
+
+        medium = Steganography(sourcePath)
+        message = medium.extractMessageFromMedium()
+        message.saveToTarget(self.targetImageFilePath)
+
+        actualImage, expectedImage = loadTwoImageFiles(self.targetImageFilePath, expectedPath)
+
+        self.assertEqual(actualImage, expectedImage)
+
+    def test_extractColorImageVertical(self):
+
+        sourcePath = 'files/nature_sunflower_v.png'
+        expectedPath = 'files/sunflower.png'
+
+        medium = Steganography(sourcePath, direction='vertical')
+        message = medium.extractMessageFromMedium()
+        message.saveToTarget(self.targetImageFilePath)
+
+        actualImage, expectedImage = loadTwoImageFiles(self.targetImageFilePath, expectedPath)
+
+        self.assertEqual(actualImage, expectedImage)
+	
+'''	
+    def test_shortTextXml(self):
+
+        sourcePath = 'files/small.txt'
+        expectedPath = 'files/small.xml'
+
+        message = Message(filePath=sourcePath, messageType='Text')
+
+        with open(self.targetTextFilePath, 'w') as xmlFile:
+            xmlString = message.getXmlString()
+            xmlFile.write(xmlString)
+
+        actualTextFile, expectedTextFile = loadTwoTextFiles(self.targetTextFilePath, expectedPath)
+
+        self.assertEqual(actualTextFile, expectedTextFile)
+
+    def test_longTextXml(self):
+
+        sourcePath = 'files/full.txt'
+        expectedPath = 'files/full.xml'
+
+        message = Message(filePath=sourcePath, messageType='Text')
+
+        with open(self.targetTextFilePath, 'w') as xmlFile:
+            xmlString = message.getXmlString()
+            xmlFile.write(xmlString)
+
+        actualTextFile, expectedTextFile = loadTwoTextFiles(self.targetTextFilePath, expectedPath)
+
+        self.assertEqual(actualTextFile, expectedTextFile)
+
+    def test_grayImageXml(self):
+
+        sourcePath = 'files/dog.png'
+        expectedPath = 'files/dog.xml'
+
+        message = Message(filePath=sourcePath, messageType='GrayImage')
+
+        with open(self.targetTextFilePath, 'w') as xmlFile:
+            xmlString = message.getXmlString()
+            xmlFile.write(xmlString)
+
+        actualTextFile, expectedTextFile = loadTwoTextFiles(self.targetTextFilePath, expectedPath)
+
+        self.assertEqual(actualTextFile, expectedTextFile)
+
+    def test_colorImageXml(self):
+
+        sourcePath = 'files/sunflower.png'
+        expectedPath = 'files/sunflower.xml'
+
+        message = Message(filePath=sourcePath, messageType='ColorImage')
+
+        with open(self.targetTextFilePath, 'w') as xmlFile:
+            xmlString = message.getXmlString()
+            xmlFile.write(xmlString)
+
+        actualTextFile, expectedTextFile = loadTwoTextFiles(self.targetTextFilePath, expectedPath)
+
+        self.assertEqual(actualTextFile, expectedTextFile)
+'''
+
+    def test_badMessageInitializerWithMissingArgument(self):
+
+        sourcePath = 'files/small.txt'
+        self.assertRaises(ValueError, Message, filePath=sourcePath)
+
+    def test_badMessageInitializerWithWrongMessageType(self):
+
+        self.assertRaises(ValueError, Message, messageType='Video')
+
+    def test_badMessageInitializerWithEmptyMessageType(self):
+
+        sourcePath = 'files/small.txt'
+        self.assertRaises(ValueError, Message, filePath=sourcePath, messageType='')
+
+    def test_badMessageInitializerWithEmptyFilePath(self):
+
+        self.assertRaises(ValueError, Message, filePath='', messageType='Text')
+
+    def test_badMessageInitializerWithEmptyXmlString(self):
+
+        self.assertRaises(ValueError, Message, xmlString='')
+
+    def test_badSavingGrayImageToText(self):
+
+        sourcePath = 'files/bridge_dog_h.png'
+
+        medium = Steganography(sourcePath)
+        message = medium.extractMessageFromMedium()
+
+        self.assertRaises(TypeError, message.saveToTextFile, self.targetImageFilePath)
+
+    def test_badSavingColorImageToText(self):
+
+        sourcePath = 'files/nature_sunflower_v.png'
+
+        medium = Steganography(sourcePath, direction='vertical')
+        message = medium.extractMessageFromMedium()
+
+        self.assertRaises(TypeError, message.saveToTextFile, self.targetImageFilePath)
+
+    def test_badSavingTextToGrayImage(self):
+
+        sourcePath = 'files/mona_small_h.png'
+
+        medium = Steganography(sourcePath)
+        message = medium.extractMessageFromMedium()
+
+        self.assertRaises(TypeError, message.saveToImage, self.targetTextFilePath)
+
+    def test_badMediumInitializerWithInvalidDirection(self):
+
+        imagePath = 'nature.png'
+        self.assertRaises(ValueError, Steganography, imagePath, 'serpentine')
+
+    def test_badMediumInitializerWithColorImage(self):
+
+        imagePath = 'files/sunflower.png'
+        self.assertRaises(TypeError, Steganography, imagePath)
+
+    def test_embedLargeMessageInSmallMedium(self):
+
+        sourcePath = 'files/sunflower.png'
+
+        message = Message(filePath=sourcePath, messageType='ColorImage')
+        medium = Steganography('files/mona.png')
+
+        self.assertRaises(ValueError, medium.embedMessageInMedium, message, self.targetImageFilePath)
+
+    def test_embedHorizontalExtractVertical(self):
+
+        sourcePath = 'files/lena_full_h.png'
+
+        medium = Steganography(sourcePath, direction='vertical')
+        message = medium.extractMessageFromMedium()
+
+        self.assertEqual(message, None)
+
+    def test_embedVerticalExtractHorizontal(self):
+
+        sourcePath = 'files/mona_small_v.png'
+
+        medium = Steganography(sourcePath)
+        message = medium.extractMessageFromMedium()
+
+        self.assertEqual(message, None)
+
+    @classmethod
+    def tearDownClass(cls):
+        """
+        Clean up the created files, as unit tests are not supposed to change the environment.
+        """
+        for filePath in cls.testFileNames:
+
+            if os.path.exists(filePath):
+                os.remove(filePath)
+
+if __name__ == '__main__':
+    unittest.main()

@@ -1,0 +1,67 @@
+import math
+import sys
+import re
+import string
+
+def main():
+    o = is_valid_name("Uaadaa_5.")
+    print (o)
+    o = parse_pin_assignment(".CLK(clk)")
+    print (o)
+    o = parse_net("DFFSR present_val_reg (.D(n30), .CLK(clk), .R(n33))")
+    print (o)
+
+def is_valid_name(identifier):
+    #expr = r"[a-zA-Z0-9_]+"
+    #match = re.match(r"[a-zA-Z0-9_]+", identifier)
+    t = True
+    for c in identifier:
+        if c in string.ascii_letters or c in string.digits or c == "_":
+            t = t and True
+        else:
+            t = t and False
+    return t
+
+def parse_pin_assignment(assignment):
+    match = re.match(r"\.(?P<por>[a-zA-Z0-9_]+)\((?P<pin>[a-zA-Z0-9_]+)\)$", assignment)
+    if match:
+        return (match.group("por"),match.group("pin"))
+    else:
+        raise ValueError(assignment)
+def parse(assignment):
+    match = re.match(r"\.(?P<por>[a-zA-Z0-9_]+)\((?P<pin>[a-zA-Z0-9_]+)\)$", assignment)
+    if match:
+        return True
+    else:
+        raise ValueError(assignment)
+
+def parse_net(line):
+    el = line.split("(",1)
+
+    #print (el)
+    es = el[1][0:len(el[1])-1]
+    ps = el[1].split(" )")
+    #print (es)
+    pn = es.split(",")
+    #print (pn)
+    t = True
+    lis = []
+    for pi in pn:
+        pi = pi.split()
+        #print (pi)
+        t = t and parse(pi[0])
+        lis.add(parse_pin_assignment(pi[0]))
+        #print (ls)
+        #print (t)
+
+    if t == True:
+        #print (t)
+        es = "(("+es + ")"
+        return (el[0],lis)
+
+    #ps = ps[:ps.length-1]
+    #print (ps)
+
+
+if __name__=="__main__":
+    main()

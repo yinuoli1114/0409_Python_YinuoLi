@@ -1,0 +1,12 @@
+present_val_reg: DFFSRPORT MAP(('D', 'n30')->('CLK', 'clk'));
+U2: OAI22X1PORT MAP(('A', 'n28')->('B', 'n32'));
+U3: OAI22X1PORT MAP(('A', 'n32')->('B', 'n9'));
+U5: OAI22X1PORT MAP(('A', 'n32')->('B', 'n8'));
+U7: OAI22X1PORT MAP(('A', 'n32')->('B', 'n7'));
+U9: OAI22X1PORT MAP(('A', 'n32')->('B', 'n6'));
+U11: OAI22X1PORT MAP(('A', 'n32')->('B', 'n5'));
+U13: OAI22X1PORT MAP(('A', 'n32')->('B', 'n4'));
+U16: OAI21X1PORT MAP(('A', 'shift_strobe')->('B', 'n4'));
+U17: NAND2X1PORT MAP(('A', 'serial_in')->('B', 'n3'));
+U19: OAI21X1PORT MAP(('A', 'n31')->('B', 'n32'));
+U20: NAND2X1PORT MAP(('A', 'packet_data0')->('B', 'n32'));

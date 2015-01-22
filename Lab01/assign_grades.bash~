@@ -1,0 +1,11 @@
+#! /bin/bash
+#
+#$Authors$
+#$Dates$
+#$Revision$
+#$HeadURL$
+#$Id$
+
+if [ $# != 1 ]
+then
+  echo "Usage"

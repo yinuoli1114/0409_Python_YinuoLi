@@ -1,0 +1,45 @@
+#! /bin/bash
+#
+#$Authors$
+#$Dates$
+#$Revision$
+#$HeadURL$
+#$Id$
+if [ $# != 1 ]
+then
+  echo "Usage: ./finalize_grades.bash <roster_file>"
+exit 1
+fi
+
+
+assign_grades.bash $1
+if [[ $? > 1 ]]
+then
+  echo "Error: assign_grades.bash"
+exit 2
+fi
+if [ -e "$1".finalized ]
+then
+  echo "Output file "$1".finalized already exists"
+exit 3
+fi
+
+
+touch "$1".finalized
+fout="$1".finalized
+while read line
+do
+  name=$(echo $line | cut -d' ' -f4 | cut -d'@' -f1)
+  #echo "$name"
+  score=$(echo $line | cut -d' ' -f5)
+  #echo "$score"
+  g=$(echo $line | cut -d' ' -f6)
+  echo "$name $g" >> $fout
+
+
+
+done < $1.grades
+
+
+
+

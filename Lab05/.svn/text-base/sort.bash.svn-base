@@ -1,0 +1,17 @@
+#! /bin/bash
+#
+#$Authors$
+#$Dates$
+#$Revision$
+#$HeadURL$
+#$Id$
+
+while getopts f:b:-: thisopt
+do
+      case $thisopt in
+       f)echo $OPTARG
+       -)echo "${OPTARG}"
+       *)echo "Invalid arg"
+      esac
+done
+exit0
